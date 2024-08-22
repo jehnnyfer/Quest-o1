@@ -1,5 +1,6 @@
 #include <iostream>
-#include <cmath> // para M_PI
+#include <cmath>
+#include <iomanip> 
 
 // Classe base para figuras geométricas espaciais
 class FiguraEspacial {
@@ -58,7 +59,6 @@ private:
 public:
     Piramide(double b, double h) : base(b), altura(h) {}
     double calcularArea() const override {
-        // Considerando que a altura lateral é fornecida na fórmula geral
         double area_base = base * base;
         double area_lateral = 4 * (base * altura / 2); // Supondo altura lateral como base
         return area_base + area_lateral;
@@ -70,35 +70,77 @@ public:
 
 // Funções para exibir área e volume
 void exibirArea(const FiguraEspacial* figura) {
-    std::cout << "Área: " << figura->calcularArea() << std::endl;
+    std::cout << "Área: " << std::fixed << std::setprecision(2) << figura->calcularArea() << std::endl;
 }
 
 void exibirVolume(const FiguraEspacial* figura) {
-    std::cout << "Volume: " << figura->calcularVolume() << std::endl;
+    std::cout << "Volume: " << std::fixed << std::setprecision(2) << figura->calcularVolume() << std::endl;
 }
 
 int main() {
-    // Criação dos objetos
-    Cubo cubo(3);
-    Esfera esfera(5);
-    Paralelepipedo paralelepipedo(2, 3, 4);
-    Piramide piramide(4, 6);
+    while (true) {
+        std::cout << "Escolha uma figura geométrica para calcular:\n";
+        std::cout << "1. Cubo\n";
+        std::cout << "2. Esfera\n";
+        std::cout << "3. Paralelepípedo\n";
+        std::cout << "4. Pirâmide\n";
+        std::cout << "5. Sair\n";
+        std::cout << "Opção: ";
+        int opcao;
+        std::cin >> opcao;
 
-    // Ponteiros para funções
-    void (*pFuncArea)(const FiguraEspacial*) = exibirArea;
-    void (*pFuncVolume)(const FiguraEspacial*) = exibirVolume;
+        if (opcao == 5) {
+            break;
+        }
 
-    // Array de ponteiros para objetos
-    FiguraEspacial* figuras[4];
-    figuras[0] = &cubo;
-    figuras[1] = &esfera;
-    figuras[2] = &paralelepipedo;
-    figuras[3] = &piramide;
+        FiguraEspacial* figura = nullptr;
 
-    // Exibindo as áreas e volumes
-    for (int i = 0; i < 4; ++i) {
-        pFuncArea(figuras[i]);
-        pFuncVolume(figuras[i]);
+        switch (opcao) {
+            case 1: {
+                double aresta;
+                std::cout << "Digite o comprimento da aresta do cubo: ";
+                std::cin >> aresta;
+                figura = new Cubo(aresta);
+                break;
+            }
+            case 2: {
+                double raio;
+                std::cout << "Digite o raio da esfera: ";
+                std::cin >> raio;
+                figura = new Esfera(raio);
+                break;
+            }
+            case 3: {
+                double aresta1, aresta2, aresta3;
+                std::cout << "Digite o comprimento da primeira aresta do paralelepípedo: ";
+                std::cin >> aresta1;
+                std::cout << "Digite o comprimento da segunda aresta do paralelepípedo: ";
+                std::cin >> aresta2;
+                std::cout << "Digite o comprimento da terceira aresta do paralelepípedo: ";
+                std::cin >> aresta3;
+                figura = new Paralelepipedo(aresta1, aresta2, aresta3);
+                break;
+            }
+            case 4: {
+                double base, altura;
+                std::cout << "Digite o comprimento da base da pirâmide: ";
+                std::cin >> base;
+                std::cout << "Digite a altura da pirâmide: ";
+                std::cin >> altura;
+                figura = new Piramide(base, altura);
+                break;
+            }
+            default:
+                std::cout << "Opção inválida. Tente novamente.\n";
+                continue;
+        }
+
+        if (figura != nullptr) {
+            exibirArea(figura);
+            exibirVolume(figura);
+            delete figura; // Libera a memória alocada
+        }
+
         std::cout << std::endl;
     }
 
