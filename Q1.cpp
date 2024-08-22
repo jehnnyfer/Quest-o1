@@ -84,17 +84,18 @@ int main() {
     Paralelepipedo paralelepipedo(2, 3, 4);
     Piramide piramide(4, 6);
 
-    // Array de ponteiros para funções
-    void (pFuncArea)(const FiguraEspacial) = exibirArea;
-    void (pFuncVolume)(const FiguraEspacial) = exibirVolume;
+    // Ponteiros para funções
+    void (*pFuncArea)(const FiguraEspacial*) = exibirArea;
+    void (*pFuncVolume)(const FiguraEspacial*) = exibirVolume;
 
-    // Exibindo as áreas e volumes
+    // Array de ponteiros para objetos
     FiguraEspacial* figuras[4];
     figuras[0] = &cubo;
     figuras[1] = &esfera;
     figuras[2] = &paralelepipedo;
     figuras[3] = &piramide;
 
+    // Exibindo as áreas e volumes
     for (int i = 0; i < 4; ++i) {
         pFuncArea(figuras[i]);
         pFuncVolume(figuras[i]);
@@ -103,3 +104,4 @@ int main() {
 
     return 0;
 }
+
